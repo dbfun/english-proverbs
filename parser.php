@@ -1,20 +1,19 @@
 #!/usr/bin/php
 <?
 
-require(__DIR__ . '/../../lib/simplehtmldom/simple_html_dom.php');
-// require(__DIR__ . '/../../lib/interlabscms/mysql.php');
-// new DataBaseMysql($host, $user, $password, $database);
+require(__DIR__ . '/lib/simplehtmldom/simple_html_dom.php');
 
 class documentParser {
   private $database;
   public function __construct(Mongo $mongo) {
     $this->database = $mongo->proverbs;
-    }
+  }
+  
   private $content;
   public function getContent($fileName) {
     $this->content = file_get_contents($fileName);
     $this->content = preg_replace('#<\/i><i>#Ui', '', $this->content);
-    }
+  }
     
   private function saveMatch($matches) {
     $item = new stdClass();
@@ -28,19 +27,16 @@ class documentParser {
         }
       unset($_item);
       }
-    // print_r($item);
     $this->database->english->insert($item);
-    }
+  }
     
-
-  
   public function parseNsave() {
     $html = str_get_html($this->content);
     $content = $html->find('div#content', 0)->innertext;
     preg_replace_callback('#<b>([^<]*)<\/b><br><br>(.*)<br><br>#Ui', 'self::saveMatch', $content);
-    }
-  
   }
+  
+}
 
 
 $mongo = new Mongo('localhost');
@@ -50,6 +46,6 @@ for($i = 1; $i <=50; $i++) {
   $fileName = __DIR__ . '/src/pages/'.$i.'.html';
   $documentParser->getContent($fileName);
   $documentParser->parseNsave();
-  }
+}
 
 echo PHP_EOL;
