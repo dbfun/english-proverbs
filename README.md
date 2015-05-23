@@ -1,7 +1,6 @@
-Парсер английских пословиц и поговорок
-======================================
+# Описание
 
-Парсер имен в MongoDB (proverbs, db.english) с [native-english.ru](http://www.native-english.ru/proverbs/).
+Парсер английских пословиц и поговорок в MongoDB (proverbs, db.english) с [http://native-english.ru/proverbs/](native-english.ru).
 
 Скачивание:
 
